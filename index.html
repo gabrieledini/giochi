@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Giochi</title>
+<meta name="description" content="Tutti i giochi in un posto solo">
+<meta name="theme-color" content="#FFC93C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Giochi">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" id="appleicon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFC93C;
+  --dot:rgba(30,27,75,.10);
+  --ink:#1E1B4B;
+  --paper:#FFFFFF;
+  --muted:#4B4775;
+  --shadow:#1E1B4B;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1A3A;--dot:rgba(255,201,60,.10);--ink:#FFF6DC;
+    --paper:#2A2856;--muted:#C9C4F0;--shadow:#0C0B22;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1A3A;--dot:rgba(255,201,60,.10);--ink:#FFF6DC;
+  --paper:#2A2856;--muted:#C9C4F0;--shadow:#0C0B22;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;min-height:100vh;
+  font-family:"Baloo 2","Nunito","Trebuchet MS",system-ui,sans-serif;
+  color:var(--ink);
+  background-color:var(--bg);
+  background-image:radial-gradient(var(--dot) 2.5px,transparent 3px);
+  background-size:26px 26px;
+  -webkit-tap-highlight-color:transparent;
+}
+main{max-width:760px;margin:0 auto;padding:28px 18px 40px}
+
+header{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+header canvas{width:72px;height:72px;border-radius:20px;
+  box-shadow:4px 4px 0 var(--shadow);transform:rotate(-6deg);flex:none}
+h1{margin:0;font-size:clamp(2.8rem,12vw,4.2rem);line-height:.9;font-weight:800;letter-spacing:-.01em}
+.sub{margin:4px 0 0;font-size:1.15rem;font-weight:500;color:var(--muted)}
+
+h2{font-size:1.35rem;font-weight:700;margin:34px 0 12px;display:flex;align-items:center;gap:8px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:18px}
+
+.gioco{
+  --c:#FF6B6B;
+  display:flex;flex-direction:column;gap:6px;
+  text-decoration:none;color:var(--ink);
+  background:var(--paper);
+  border:3px solid var(--ink);
+  border-radius:22px;
+  padding:14px 14px 16px;
+  box-shadow:5px 5px 0 var(--shadow);
+  transform:rotate(var(--r,0deg));
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.gioco:nth-child(odd){--r:-1.2deg}
+.gioco:nth-child(even){--r:1deg}
+.gioco:hover{transform:rotate(0) translateY(-3px);box-shadow:7px 8px 0 var(--shadow)}
+.gioco:active{transform:rotate(0) translate(4px,4px);box-shadow:1px 1px 0 var(--shadow)}
+.gioco:focus-visible{outline:4px solid var(--c);outline-offset:4px}
+
+.bollo{
+  width:64px;height:64px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:2.1rem;line-height:1;
+  background:var(--c);border:3px solid var(--ink);
+}
+.nome{font-size:1.2rem;font-weight:800;line-height:1.1;margin-top:4px}
+.cosa{font-size:.98rem;font-weight:500;line-height:1.25;color:var(--muted)}
+
+footer{margin-top:40px;text-align:center;font-weight:500;color:var(--muted)}
+#installa{
+  display:none;margin:0 auto;font:inherit;font-weight:700;font-size:1.1rem;
+  color:var(--ink);background:var(--paper);border:3px solid var(--ink);
+  border-radius:999px;padding:10px 22px;box-shadow:4px 4px 0 var(--shadow);cursor:pointer
+}
+#installa:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+
+@media (prefers-reduced-motion:reduce){
+  .gioco,.gioco:hover,.gioco:active{transition:none;transform:none}
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <canvas id="logo" width="144" height="144" aria-hidden="true"></canvas>
+    <div>
+      <h1>Giochi</h1>
+      <p class="sub">Tocca un gioco per cominciare</p>
+    </div>
+  </header>
+
+  <h2>🧠 Quiz e indovinelli</h2>
+  <div class="grid">
+    <a class="gioco" style="--c:#FF8A5B" href="https://razzodinumeri.netlify.app/">
+      <span class="bollo">🚀</span>
+      <span class="nome">Razzo dei Numeri</span>
+      <span class="cosa">Conti, tabelline e frazioni</span>
+    </a>
+    <a class="gioco" style="--c:#7ED957" href="https://tommasoindovinaparola.netlify.app/">
+      <span class="bollo">🔤</span>
+      <span class="nome">Indovina la parola</span>
+      <span class="cosa">Trova la parola segreta</span>
+    </a>
+    <a class="gioco" style="--c:#5BC0FF" href="https://jolly-tapioca-381cd4.netlify.app/">
+      <span class="bollo">🏳️</span>
+      <span class="nome">Indovina la bandiera</span>
+      <span class="cosa">Di che paese è?</span>
+    </a>
+    <a class="gioco" style="--c:#FF5E7E" href="https://golden-gnome-0edb55.netlify.app/">
+      <span class="bollo">🛑</span>
+      <span class="nome">Indovina il cartello</span>
+      <span class="cosa">Cosa vuol dire questo cartello?</span>
+    </a>
+  </div>
+
+  <h2>🕹️ Avventure</h2>
+  <div class="grid">
+    <a class="gioco" style="--c:#B08CFF" href="https://dynamic-conkies-fe57db.netlify.app/">
+      <span class="bollo">🏰</span>
+      <span class="nome">La Campana Perduta</span>
+      <span class="cosa">Un mistero nell’abbazia</span>
+    </a>
+    <a class="gioco" style="--c:#FFB347" href="https://jolly-tulumba-603328.netlify.app/">
+      <span class="bollo">🍔</span>
+      <span class="nome">Burger Time</span>
+      <span class="cosa">Costruisci gli hamburger</span>
+    </a>
+  </div>
+
+  <h2>🎵 Musica</h2>
+  <div class="grid">
+    <a class="gioco" style="--c:#4FD1C5" href="https://glistening-basbousa-97f856.netlify.app/">
+      <span class="bollo">🎹</span>
+      <span class="nome">Le 7 Note</span>
+      <span class="cosa">Suona “Fra Martino”</span>
+    </a>
+    <a class="gioco" style="--c:#FFD93D" href="https://serene-hummingbird-1ad584.netlify.app/">
+      <span class="bollo">🔔</span>
+      <span class="nome">Suona le campane</span>
+      <span class="cosa">Fai dondolare le campane</span>
+    </a>
+  </div>
+
+  <footer>
+    <button id="installa" type="button">📲 Metti sul telefono</button>
+  </footer>
+</main>
+
+<script>
+/* ---------- Icona disegnata: joypad su fondo giallo ---------- */
+function disegnaIcona(size, maskable){
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const x = c.getContext('2d');
+  const s = size/512;
+  x.scale(s, s);
+
+  // sfondo
+  x.fillStyle = '#FFC93C';
+  if (maskable){ x.fillRect(0,0,512,512); }
+  else { roundRect(x,0,0,512,512,112); x.fill(); }
+
+  // pois
+  x.fillStyle = 'rgba(30,27,75,.10)';
+  for (let i=26;i<512;i+=52) for (let j=26;j<512;j+=52){
+    x.beginPath(); x.arc(i,j,6,0,Math.PI*2); x.fill();
+  }
+
+  // joypad (scalato al centro per restare nella zona sicura maskable)
+  x.save();
+  x.translate(256,270); x.scale(.82,.82); x.rotate(-0.12);
+  // ombra piena
+  x.fillStyle = '#1E1B4B';
+  padPath(x, 14, 14); x.fill();
+  // corpo
+  x.fillStyle = '#7C5CFF';
+  padPath(x, 0, 0); x.fill();
+  x.lineWidth = 16; x.strokeStyle = '#1E1B4B'; x.stroke();
+
+  // croce direzionale
+  x.fillStyle = '#FFFFFF';
+  x.strokeStyle = '#1E1B4B'; x.lineWidth = 10;
+  x.beginPath();
+  roundRect(x,-158,-22,104,44,10); x.fill(); x.stroke();
+  roundRect(x,-128,-52,44,104,10); x.fill(); x.stroke();
+  x.fillRect(-123,-17,34,34);
+
+  // pulsanti
+  const btn = (bx,by,col)=>{
+    x.beginPath(); x.arc(bx,by,25,0,Math.PI*2);
+    x.fillStyle = col; x.fill(); x.lineWidth=10; x.stroke();
+  };
+  btn(92,-34,'#FF5E7E'); btn(138,10,'#7ED957');
+  btn(46,10,'#5BC0FF'); btn(92,54,'#FFD93D');
+  x.restore();
+  return c;
+}
+function padPath(x,dx,dy){
+  x.beginPath();
+  x.moveTo(-170+dx,-90+dy);
+  x.bezierCurveTo(-60+dx,-112+dy,60+dx,-112+dy,170+dx,-90+dy);
+  x.bezierCurveTo(250+dx,-74+dy,270+dx,80+dy,230+dx,130+dy);
+  x.bezierCurveTo(200+dx,168+dy,150+dx,150+dy,110+dx,100+dy);
+  x.bezierCurveTo(50+dx,82+dy,-50+dx,82+dy,-110+dx,100+dy);
+  x.bezierCurveTo(-150+dx,150+dy,-200+dx,168+dy,-230+dx,130+dy);
+  x.bezierCurveTo(-270+dx,80+dy,-250+dx,-74+dy,-170+dx,-90+dy);
+  x.closePath();
+}
+function roundRect(x,a,b,w,h,r){
+  x.beginPath();
+  x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r);
+  x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath();
+}
+
+(function impostaIcone(){
+  try{
+    // logo nella pagina
+    const logo = document.getElementById('logo');
+    logo.getContext('2d').drawImage(disegnaIcona(144,false),0,0);
+
+    const png = (n,m)=>disegnaIcona(n,m).toDataURL('image/png');
+    document.getElementById('favicon').href = png(64,false);
+    document.getElementById('appleicon').href = png(180,true);
+
+    const manifest = {
+      name: 'Giochi',
+      short_name: 'Giochi',
+      start_url: location.href.split('#')[0],
+      scope: location.origin + '/',
+      display: 'standalone',
+      background_color: '#FFC93C',
+      theme_color: '#FFC93C',
+      icons: [
+        {src: png(192,false), sizes:'192x192', type:'image/png', purpose:'any'},
+        {src: png(512,false), sizes:'512x512', type:'image/png', purpose:'any'},
+        {src: png(512,true),  sizes:'512x512', type:'image/png', purpose:'maskable'}
+      ]
+    };
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(link);
+  }catch(e){ /* l'icona emoji resta come ripiego */ }
+})();
+
+/* ---------- Pulsante "Metti sul telefono" (Android/Chrome) ---------- */
+let richiesta = null;
+const bottone = document.getElementById('installa');
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); richiesta = e; bottone.style.display = 'inline-block';
+});
+bottone.addEventListener('click', async ()=>{
+  if (!richiesta) return;
+  richiesta.prompt(); await richiesta.userChoice;
+  richiesta = null; bottone.style.display = 'none';
+});
+window.addEventListener('appinstalled', ()=>{ bottone.style.display = 'none'; });
+</script>
+</body>
+</html>
